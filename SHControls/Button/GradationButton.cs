@@ -58,8 +58,10 @@ namespace SHControls
         protected override void OnPaint(PaintEventArgs e)
         {
             if (this.Width == 0 || this.Height == 0) return;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             LinearGradientBrush linGrBrush
-                = new LinearGradientBrush(this.ClientRectangle, _GradationStartColor, _GradationEndColor, _GradationRatio);  // Opaque blue
+                = new LinearGradientBrush(this.ClientRectangle, _GradationStartColor, _GradationEndColor, _GradationRatio);  
 
             if (_BorderSize != 0)
             {
