@@ -12,6 +12,7 @@ namespace SHControls.Buttons
 {
     class GradationButton : Button
     {
+        #region [ Property ]
         private Color _GradationStartColor = Color.Green;
         [Description("Gradation Start Color"), Category("Gradation")]
         public Color GradationStartColor
@@ -55,79 +56,71 @@ namespace SHControls.Buttons
                 this.Refresh();
             }
         }
+        #endregion
+
+        #region [ Members ]
 
         private bool _MouseHovered = false;
+        private bool _MouseDowned = false;
 
+        #endregion
 
+        #region [ Paint ] 
         protected override void OnPaint(PaintEventArgs e)
         {
             if (this.Width <= 0 || this.Height <= 0) return;
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
-            LinearGradientBrush linGrBrush;
+            SetGraphicHits(e);
 
-            if(!_MouseHovered)
-               linGrBrush = new LinearGradientBrush(this.ClientRectangle, _GradationStartColor, _GradationEndColor, _GradationRatio);  
-            else
-                linGrBrush = new LinearGradientBrush(this.ClientRectangle,
-                    MouseHoveredColor(_GradationStartColor), MouseHoveredColor(_GradationEndColor), _GradationRatio);
-
-            int sx = _BorderSize;
-            int sy = _BorderSize;
             int width = this.Width - _BorderSize * 2;
             int height = this.Height - _BorderSize * 2;
+
             if (width > 0 && height > 0)
             {
-                Rectangle backgroundRectangle = new Rectangle(sx, sy, width, height);
-                Rectangle textRectangle = new Rectangle(sx + this.Padding.Left, sy + this.Padding.Top, width - this.Padding.Left - this.Padding.Right, height - this.Padding.Top - this.Padding.Bottom);
-
-                StringFormat sf = GetThisStringForamt();
-                e.Graphics.FillRectangle(linGrBrush,backgroundRectangle);
-                e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRectangle, sf);
+                FillGradation(e, width, height);
+                DrawText(e, width, height);
             }
 
-            if (_BorderSize != 0)
-            {
-                Pen pen = new Pen(BorderColor);
-                pen.Width = _BorderSize;
-                e.Graphics.DrawLine(pen, new Point(0, 0), new Point(0, this.Height - 1));
-                e.Graphics.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
-                e.Graphics.DrawLine(pen, new Point(this.Width - 1, this.Height - 1), new Point(0, this.Height - 1));
-                e.Graphics.DrawLine(pen, new Point(this.Width - 1, this.Height - 1), new Point(this.Width - 1, 0));
-            }
+            if (_BorderSize != 0) DrawOutLine(e);
         }
 
-        #region [ Mouse Hover Color ]
-        protected override void OnMouseHover(EventArgs e)
+        private static void SetGraphicHits(PaintEventArgs e)
         {
-            _MouseHovered = true ;
-            base.OnMouseHover(e);
-            this.Refresh();
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        private void FillGradation(PaintEventArgs e, int width, int height)
         {
-            _MouseHovered = false;
-            base.OnMouseLeave(e);
-            this.Refresh();
+            LinearGradientBrush linGrBrush = GetGradationBrush();
+
+            Rectangle backgroundRectangle = new Rectangle(_BorderSize, _BorderSize, width, height);
+            e.Graphics.FillRectangle(linGrBrush, backgroundRectangle);
         }
 
-        private Color MouseHoveredColor(Color color)
+        private LinearGradientBrush GetGradationBrush()
         {
-            int r = GetHonvertedInt(color.R);
-            int g = GetHonvertedInt(color.G);
-            int b = GetHonvertedInt(color.B);
+            LinearGradientBrush brush;
 
-            return Color.FromArgb(r, g, b);
+            if (_MouseDowned)
+                brush = new LinearGradientBrush(this.ClientRectangle,
+                    MouseDowneddColor(_GradationStartColor), MouseDowneddColor(_GradationEndColor), _GradationRatio);
+            else if ( _MouseHovered)
+                brush = new LinearGradientBrush(this.ClientRectangle,
+                    MouseHoveredColor(_GradationStartColor), MouseHoveredColor(_GradationEndColor), _GradationRatio);
+            else
+                brush = new LinearGradientBrush(this.ClientRectangle, _GradationStartColor, _GradationEndColor, _GradationRatio);
+
+            return brush;
         }
-        private int GetHonvertedInt(int colorValue)
+
+        private void DrawText(PaintEventArgs e, int width, int height)
         {
-            if (colorValue < 50) return colorValue + 30;
-            else return colorValue - 30;
-        }
-        #endregion
+            Rectangle textRectangle = new Rectangle(_BorderSize + this.Padding.Left, _BorderSize + this.Padding.Top, width - this.Padding.Left - this.Padding.Right, height - this.Padding.Top - this.Padding.Bottom);
 
+            StringFormat sf = GetThisStringForamt();
+            e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRectangle, sf);
+        }
 
         private StringFormat GetThisStringForamt()
         {
@@ -176,5 +169,72 @@ namespace SHControls.Buttons
             }
             return thisFormat;
         }
+
+        private void DrawOutLine(PaintEventArgs e)
+        {
+            Pen pen = new Pen(BorderColor);
+            pen.Width = _BorderSize;
+            e.Graphics.DrawLine(pen, new Point(0, 0), new Point(0, this.Height - 1));
+            e.Graphics.DrawLine(pen, new Point(0, 0), new Point(this.Width - 1, 0));
+            e.Graphics.DrawLine(pen, new Point(this.Width - 1, this.Height - 1), new Point(0, this.Height - 1));
+            e.Graphics.DrawLine(pen, new Point(this.Width - 1, this.Height - 1), new Point(this.Width - 1, 0));
+        }
+        #endregion
+
+        #region [ Mouse Hover Color ]
+        protected override void OnMouseHover(EventArgs e)
+        {
+            _MouseHovered = true ;
+            base.OnMouseHover(e);
+            this.Refresh();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            _MouseHovered = false;
+            base.OnMouseLeave(e);
+            this.Refresh();
+        }
+
+        private Color MouseHoveredColor(Color color)
+        {
+            int r = GetHonvertedInt(color.R);
+            int g = GetHonvertedInt(color.G);
+            int b = GetHonvertedInt(color.B);
+
+            return Color.FromArgb(r, g, b);
+        }
+        private int GetHonvertedInt(int colorValue)
+        {
+            if (colorValue < 50) return colorValue + 30;
+            else return colorValue - 30;
+        }
+        #endregion
+
+        #region [ Mouse Down Color ]
+        protected override void OnMouseDown(MouseEventArgs mevent)
+        {
+            base.OnMouseDown(mevent);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs mevent)
+        {
+            base.OnMouseUp(mevent);
+        }
+
+        private Color MouseDowneddColor(Color color)
+        {
+            int r = GetMouseDownedInt(color.R);
+            int g = GetMouseDownedInt(color.G);
+            int b = GetMouseDownedInt(color.B);
+
+            return Color.FromArgb(r, g, b);
+        }
+        private int GetMouseDownedInt(int colorValue)
+        {
+            if (colorValue < 50) return colorValue + 80;
+            else return colorValue - 45;
+        }
+        #endregion
     }
 }
