@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Button\GradationButton.cs">
+    <Compile Include="Buttons\GradationButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Examples\Example.cs">
@@ -54,6 +54,9 @@
     </Compile>
     <Compile Include="Examples\Example.Designer.cs">
       <DependentUpon>Example.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\GradationPanel.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -28,21 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gradationButton1 = new SHControls.GradationButton();
+            this.gradationButton1 = new SHControls.Buttons.GradationButton();
             this.SuspendLayout();
             // 
             // gradationButton1
             // 
             this.gradationButton1.BorderColor = System.Drawing.Color.Black;
-            this.gradationButton1.BorderSize = 1;
+            this.gradationButton1.BorderSize = 5;
             this.gradationButton1.GradatinEndColor = System.Drawing.Color.Yellow;
             this.gradationButton1.GradationStartColor = System.Drawing.Color.Green;
             this.gradationButton1.GradtionRatio = 0F;
-            this.gradationButton1.Location = new System.Drawing.Point(445, 164);
+            this.gradationButton1.Location = new System.Drawing.Point(435, 166);
             this.gradationButton1.Name = "gradationButton1";
-            this.gradationButton1.Size = new System.Drawing.Size(112, 31);
+            this.gradationButton1.Padding = new System.Windows.Forms.Padding(10);
+            this.gradationButton1.Size = new System.Drawing.Size(231, 129);
             this.gradationButton1.TabIndex = 0;
-            this.gradationButton1.Text = "gradationButton1";
+            this.gradationButton1.Text = "갇겆 ㄱ저ㅑㄷ";
+            this.gradationButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.gradationButton1.UseVisualStyleBackColor = true;
             // 
             // Example1
@@ -59,7 +61,7 @@
 
         #endregion
 
-        private GradationButton gradationButton1;
+        private Buttons.GradationButton gradationButton1;
     }
 }
 

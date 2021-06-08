@@ -79,9 +79,12 @@ namespace SHControls.Buttons
             int height = this.Height - _BorderSize * 2;
             if (width > 0 && height > 0)
             {
-                Rectangle contentRectangle = new Rectangle(sx, sy, width, height);
-                e.Graphics.FillRectangle(linGrBrush,contentRectangle);
-                e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), 6,6);
+                Rectangle backgroundRectangle = new Rectangle(sx, sy, width, height);
+                Rectangle textRectangle = new Rectangle(sx + this.Padding.Left, sy + this.Padding.Top, width - this.Padding.Left - this.Padding.Right, height - this.Padding.Top - this.Padding.Bottom);
+
+                StringFormat sf = GetThisStringForamt();
+                e.Graphics.FillRectangle(linGrBrush,backgroundRectangle);
+                e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRectangle, sf);
             }
 
             if (_BorderSize != 0)
@@ -95,30 +98,83 @@ namespace SHControls.Buttons
             }
         }
 
+        #region [ Mouse Hover Color ]
         protected override void OnMouseHover(EventArgs e)
         {
-            base.OnMouseHover(e);
             _MouseHovered = true ;
+            base.OnMouseHover(e);
             this.Refresh();
         }
+
         protected override void OnMouseLeave(EventArgs e)
         {
-            base.OnMouseLeave(e);
             _MouseHovered = false;
+            base.OnMouseLeave(e);
+            this.Refresh();
         }
 
         private Color MouseHoveredColor(Color color)
         {
-            int r = GetConvertedInt(color.R);
-            int g = GetConvertedInt(color.G);
-            int b = GetConvertedInt(color.B);
+            int r = GetHonvertedInt(color.R);
+            int g = GetHonvertedInt(color.G);
+            int b = GetHonvertedInt(color.B);
 
             return Color.FromArgb(r, g, b);
         }
-        private int GetConvertedInt(int colorValue)
+        private int GetHonvertedInt(int colorValue)
         {
             if (colorValue < 50) return colorValue + 30;
             else return colorValue - 30;
+        }
+        #endregion
+
+
+        private StringFormat GetThisStringForamt()
+        {
+            StringFormat thisFormat = new StringFormat();
+            switch(this.TextAlign)
+            {
+                case ContentAlignment.BottomCenter:
+                    thisFormat.LineAlignment = StringAlignment.Far;
+                    thisFormat.Alignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.BottomLeft:
+                    thisFormat.LineAlignment = StringAlignment.Far;
+                    thisFormat.Alignment = StringAlignment.Near;
+                    break;
+
+                case ContentAlignment.BottomRight:
+                    thisFormat.LineAlignment = StringAlignment.Far;
+                    thisFormat.Alignment = StringAlignment.Far;
+                    break;
+
+                case ContentAlignment.MiddleCenter:
+                    thisFormat.LineAlignment = StringAlignment.Center;
+                    thisFormat.Alignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.MiddleLeft:
+                    thisFormat.LineAlignment = StringAlignment.Center;
+                    thisFormat.Alignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.MiddleRight:
+                    thisFormat.LineAlignment = StringAlignment.Center;
+                    thisFormat.Alignment = StringAlignment.Far;
+                    break;
+
+                case ContentAlignment.TopCenter:
+                    thisFormat.LineAlignment = StringAlignment.Near;
+                    thisFormat.Alignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.TopLeft:
+                    thisFormat.LineAlignment = StringAlignment.Near;
+                    thisFormat.Alignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.TopRight:
+                    thisFormat.LineAlignment = StringAlignment.Near;
+                    thisFormat.Alignment = StringAlignment.Far;
+                    break;
+            }
+            return thisFormat;
         }
     }
 }
