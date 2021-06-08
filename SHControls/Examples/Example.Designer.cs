@@ -28,8 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.gradationPanel1 = new SHControls.Panels.GradationPanel();
             this.gradationButton1 = new SHControls.Buttons.GradationButton();
             this.SuspendLayout();
+            // 
+            // gradationPanel1
+            // 
+            this.gradationPanel1.BorderColor = System.Drawing.Color.Black;
+            this.gradationPanel1.BorderSize = 1;
+            this.gradationPanel1.GradatinEndColor = System.Drawing.Color.Yellow;
+            this.gradationPanel1.GradationStartColor = System.Drawing.Color.Green;
+            this.gradationPanel1.GradtionRatio = 0F;
+            this.gradationPanel1.Location = new System.Drawing.Point(53, 228);
+            this.gradationPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.gradationPanel1.Name = "gradationPanel1";
+            this.gradationPanel1.Size = new System.Drawing.Size(680, 223);
+            this.gradationPanel1.TabIndex = 1;
             // 
             // gradationButton1
             // 
@@ -38,7 +52,7 @@
             this.gradationButton1.GradatinEndColor = System.Drawing.Color.Yellow;
             this.gradationButton1.GradationStartColor = System.Drawing.Color.Green;
             this.gradationButton1.GradtionRatio = 0F;
-            this.gradationButton1.Location = new System.Drawing.Point(435, 166);
+            this.gradationButton1.Location = new System.Drawing.Point(502, 47);
             this.gradationButton1.Name = "gradationButton1";
             this.gradationButton1.Padding = new System.Windows.Forms.Padding(10);
             this.gradationButton1.Size = new System.Drawing.Size(231, 129);
@@ -53,6 +67,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(814, 460);
             this.Controls.Add(this.gradationButton1);
+            this.Controls.Add(this.gradationPanel1);
             this.Name = "Example1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -62,6 +77,7 @@
         #endregion
 
         private Buttons.GradationButton gradationButton1;
+        private Panels.GradationPanel gradationPanel1;
     }
 }
 
