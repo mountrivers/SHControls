@@ -28,3 +28,15 @@ Can Use Gradation Colored Button
 - BorderColor : Color of Border
 
 
+---
+# Panel
+
+## Gradation Panel
+![image](https://user-images.githubusercontent.com/36880919/121682920-a4781c80-caf7-11eb-92a8-8a73994a7aa9.png)
+
+Can Use Gradation Colored Button 
+
+### Property
+- GradationStartColor : Gradation Start Color
+- GradatinEndColor : Gradation End Color
+- GradtionRatio : Ratio of Gradation ( degree, over 360 and under 0 automaticaly calculated ) 
